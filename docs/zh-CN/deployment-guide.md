@@ -31,8 +31,8 @@ curl -fsSL https://openclaw.ai/deploy-cn.sh | bash
 #### 2. 手动Docker部署
 
 ```bash
-# 克隆仓库
-git clone https://github.com/NanMengAI/openclaw.git
+# 克隆指定分支
+git clone -b v0/hoang46936420ice-7664-8cd5408b https://github.com/NanMengAI/openclaw.git
 cd openclaw
 
 # 复制环境变量配置文件
@@ -73,8 +73,8 @@ openclaw gateway --port 18789
 ### 方式三：源码构建
 
 ```bash
-# 克隆仓库
-git clone https://github.com/NanMengAI/openclaw.git
+# 克隆指定分支
+git clone -b v0/hoang46936420ice-7664-8cd5408b https://github.com/NanMengAI/openclaw.git
 cd openclaw
 
 # 安装依赖

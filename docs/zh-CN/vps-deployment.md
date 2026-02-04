@@ -28,8 +28,8 @@ sudo apt install docker-compose-plugin -y
 ### 步骤1：下载并运行部署脚本
 
 ```bash
-# 克隆项目
-git clone https://github.com/NanMengAI/openclaw.git
+# 克隆项目（指定分支）
+git clone -b v0/hoang46936420ice-7664-8cd5408b https://github.com/NanMengAI/openclaw.git
 cd openclaw
 
 # 添加执行权限并运行部署脚本
@@ -64,7 +64,8 @@ http://你的服务器IP:18789
 ### 步骤1：克隆项目
 
 ```bash
-git clone https://github.com/NanMengAI/openclaw.git
+# 克隆指定的中国版分支
+git clone -b v0/hoang46936420ice-7664-8cd5408b https://github.com/NanMengAI/openclaw.git
 cd openclaw
 ```
 
