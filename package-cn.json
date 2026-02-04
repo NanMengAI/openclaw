@@ -1,0 +1,82 @@
+{
+  "name": "openclaw-cn",
+  "version": "2026.2.2-cn-1",
+  "description": "OpenClaw 中国版 - 为中国用户优化的个人AI助手",
+  "keywords": [
+    "ai",
+    "assistant",
+    "chatbot",
+    "wechat",
+    "dingtalk",
+    "feishu",
+    "中国版",
+    "企业微信",
+    "钉钉",
+    "飞书"
+  ],
+  "license": "MIT",
+  "author": "OpenClaw Community",
+  "bin": {
+    "openclaw": "openclaw.mjs",
+    "openclaw-cn": "openclaw.mjs"
+  },
+  "files": [
+    "assets/",
+    "CHANGELOG.md",
+    "dist/",
+    "docs/",
+    "extensions/",
+    "LICENSE",
+    "openclaw.mjs",
+    "README.md",
+    "README.zh-CN.md",
+    "skills/",
+    ".openclaw-preinstalled"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./plugin-sdk": "./dist/plugin-sdk/index.js",
+    "./cli-entry": "./openclaw.mjs"
+  },
+  "scripts": {
+    "build": "pnpm canvas:a2ui:bundle && tsdown && node --import tsx scripts/canvas-a2ui-copy.ts && node --import tsx scripts/copy-hook-metadata.ts && node --import tsx scripts/write-build-info.ts",
+    "build:cn": "pnpm build && bash scripts/install-all-extensions-cn.sh",
+    "prepack": "pnpm build:cn && pnpm ui:build",
+    "start": "node scripts/run-node.mjs",
+    "gateway": "node scripts/run-node.mjs gateway",
+    "onboard": "node scripts/run-node.mjs onboard-cn"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.35.0",
+    "@aws-sdk/client-dynamodb": "^3.719.0",
+    "@aws-sdk/dsql-signer": "^3.721.0",
+    "@aws-sdk/lib-dynamodb": "^3.719.0",
+    "@aws-sdk/rds-signer": "^3.721.0",
+    "@larksuiteoapi/node-sdk": "^1.43.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "@upstash/redis": "^1.35.2",
+    "baileys": "6.7.8",
+    "openai": "^4.79.1",
+    "ws": "^8.18.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsdown": "^0.2.24",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NanMengAI/openclaw.git"
+  },
+  "homepage": "https://openclaw.ai",
+  "bugs": {
+    "url": "https://github.com/NanMengAI/openclaw/issues"
+  }
+}

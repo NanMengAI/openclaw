@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  openclaw:
+    image: ${OPENCLAW_IMAGE:-openclaw:latest-cn}
+    container_name: openclaw
+    environment:
+      # 家目录
+      HOME: /home/node
+      TERM: xterm-256color
+      
+      # 中文环境
+      OPENCLAW_LANG: zh-CN
+      LANG: zh_CN.UTF-8
+      LC_ALL: zh_CN.UTF-8
+      
+      # 网关配置
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:-}
+      OPENCLAW_GATEWAY_PASSWORD: ${OPENCLAW_GATEWAY_PASSWORD:-}
+      
+      # AI模型配置（可选 - 推荐使用南梦AI）
+      # OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      # OPENAI_BASE_URL: https://api.nanmeng.work/v1
+      
+      # 企业微信配置（可选）
+      WECOM_CORP_ID: ${WECOM_CORP_ID:-}
+      WECOM_CORP_SECRET: ${WECOM_CORP_SECRET:-}
+      WECOM_AGENT_ID: ${WECOM_AGENT_ID:-}
+      
+      # 钉钉配置（可选）
+      DINGTALK_APP_KEY: ${DINGTALK_APP_KEY:-}
+      DINGTALK_APP_SECRET: ${DINGTALK_APP_SECRET:-}
+      
+      # 飞书配置（可选）
+      FEISHU_APP_ID: ${FEISHU_APP_ID:-}
+      FEISHU_APP_SECRET: ${FEISHU_APP_SECRET:-}
+      
+    volumes:
+      # 配置文件目录
+      - ${OPENCLAW_CONFIG_DIR:-./openclaw-data}:/home/node/.openclaw
+      # 工作空间目录
+      - ${OPENCLAW_WORKSPACE_DIR:-./openclaw-workspace}:/home/node/.openclaw/workspace
+      
+    ports:
+      # 网关端口（Web UI）
+      - "${OPENCLAW_GATEWAY_PORT:-18789}:18789"
+      # 桥接端口
+      - "${OPENCLAW_BRIDGE_PORT:-18790}:18790"
+      
+    init: true
+    restart: unless-stopped
+    
+    # 健康检查
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:18789/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # 资源限制（可选）
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '2'
+    #       memory: 4G
+    #     reservations:
+    #       cpus: '1'
+    #       memory: 2G
+    
+    command:
+      - node
+      - dist/index.js
+      - gateway
+      - --bind
+      - "0.0.0.0"
+      - --port
+      - "18789"
+      - --allow-unconfigured
+
+  # OpenClaw CLI工具容器（可选）
+  openclaw-cli:
+    image: ${OPENCLAW_IMAGE:-openclaw:latest-cn}
+    container_name: openclaw-cli
+    environment:
+      HOME: /home/node
+      TERM: xterm-256color
+      OPENCLAW_LANG: zh-CN
+      LANG: zh_CN.UTF-8
+      LC_ALL: zh_CN.UTF-8
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:-}
+      BROWSER: echo
+      
+    volumes:
+      - ${OPENCLAW_CONFIG_DIR:-./openclaw-data}:/home/node/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR:-./openclaw-workspace}:/home/node/.openclaw/workspace
+      
+    stdin_open: true
+    tty: true
+    init: true
+    profiles: ["tools"]
+    
+    entrypoint: ["node", "dist/index.js"]
+
+networks:
+  default:
+    name: openclaw-network

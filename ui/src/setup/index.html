@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 初始化向导</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 
+                         'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .step-dot.completed {
+            background: #4caf50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #4caf50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .success-icon::after {
+            content: '✓';
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>OpenClaw 初始化向导</h1>
+            <p>让我们开始配置您的个人AI助手</p>
+        </div>
+        
+        <div class="content">
+            <div class="step-indicator">
+                <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            
+            <!-- 步骤1: AI模型配置 -->
+            <div class="step active" id="step1">
+                <h2>步骤 1: AI模型配置</h2>
+                <p style="margin-bottom: 20px; color: #666;">选择您的AI模型提供商</p>
+                
+                <div class="form-group">
+                    <label>AI平台</label>
+                    <select id="aiProvider">
+                        <option value="nanmengai">南梦AI（推荐）</option>
+                        <option value="openai">OpenAI</option>
+                        <option value="custom">自定义OpenAI兼容接口</option>
+                    </select>
+                    <div class="hint">南梦AI提供500+优质模型，满足您的所有需求</div>
+                </div>
+
+                <div class="form-group">
+                    <label>API密钥</label>
+                    <input type="password" id="apiKey" placeholder="sk-...">
+                    <div class="hint" id="apiKeyHint">访问 https://api.nanmeng.work 获取API密钥</div>
+                </div>
+
+                <div class="form-group" id="customEndpointGroup" style="display: none;">
+                    <label>API端点</label>
+                    <input type="text" id="apiEndpoint" placeholder="https://api.example.com/v1">
+                </div>
+
+                <div class="form-group">
+                    <label>默认模型</label>
+                    <input type="text" id="defaultModel" placeholder="gpt-4o" value="gpt-4o">
+                    <div class="hint">例如: gpt-4o, claude-3-5-sonnet, gemini-pro</div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="nextStep(1)">下一步</button>
+                </div>
+            </div>
+
+            <!-- 步骤2: 渠道配置 -->
+            <div class="step" id="step2">
+                <h2>步骤 2: 消息渠道配置</h2>
+                <p style="margin-bottom: 20px; color: #666;">选择您想要连接的消息平台（可选）</p>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="enableWecom"> 企业微信
+                    </label>
+                    <div id="wecomConfig" style="display: none; margin-top: 10px; padding-left: 24px;">
+                        <input type="text" id="wecomCorpId" placeholder="Corp ID" style="margin-bottom: 8px;">
+                        <input type="password" id="wecomCorpSecret" placeholder="Corp Secret" style="margin-bottom: 8px;">
+                        <input type="text" id="wecomAgentId" placeholder="Agent ID">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="enableDingtalk"> 钉钉
+                    </label>
+                    <div id="dingtalkConfig" style="display: none; margin-top: 10px; padding-left: 24px;">
+                        <input type="text" id="dingtalkAppKey" placeholder="App Key" style="margin-bottom: 8px;">
+                        <input type="password" id="dingtalkAppSecret" placeholder="App Secret">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="enableFeishu"> 飞书
+                    </label>
+                    <div id="feishuConfig" style="display: none; margin-top: 10px; padding-left: 24px;">
+                        <input type="text" id="feishuAppId" placeholder="App ID" style="margin-bottom: 8px;">
+                        <input type="password" id="feishuAppSecret" placeholder="App Secret">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevStep(2)">上一步</button>
+                    <button class="btn-primary" onclick="nextStep(2)">下一步</button>
+                </div>
+            </div>
+
+            <!-- 步骤3: 网关配置 -->
+            <div class="step" id="step3">
+                <h2>步骤 3: 网关安全配置</h2>
+                <p style="margin-bottom: 20px; color: #666;">设置网关访问密码以提高安全性</p>
+                
+                <div class="form-group">
+                    <label>访问令牌（推荐）</label>
+                    <input type="password" id="gatewayToken" placeholder="设置一个安全的令牌">
+                    <div class="hint">用于网关API访问认证，建议使用随机生成的长字符串</div>
+                </div>
+
+                <div class="form-group">
+                    <label>或使用密码</label>
+                    <input type="password" id="gatewayPassword" placeholder="设置一个安全的密码">
+                    <div class="hint">可以选择使用密码代替令牌</div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevStep(3)">上一步</button>
+                    <button class="btn-primary" onclick="nextStep(3)">下一步</button>
+                </div>
+            </div>
+
+            <!-- 步骤4: 确认并完成 -->
+            <div class="step" id="step4">
+                <h2>步骤 4: 确认配置</h2>
+                <div id="configSummary"></div>
+                
+                <div class="loading" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 16px;">正在保存配置...</p>
+                </div>
+
+                <div class="button-group" id="confirmButtons">
+                    <button class="btn-secondary" onclick="prevStep(4)">上一步</button>
+                    <button class="btn-primary" onclick="finishSetup()">完成设置</button>
+                </div>
+            </div>
+
+            <!-- 成功页面 -->
+            <div class="step" id="stepSuccess" style="display: none;">
+                <div class="success-message">
+                    <div class="success-icon"></div>
+                    <h2>设置完成！</h2>
+                    <p style="margin: 20px 0; color: #666;">
+                        OpenClaw已经配置完成，您现在可以开始使用了。
+                    </p>
+                    <button class="btn-primary" onclick="goToDashboard()">进入控制面板</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./setup.js"></script>
+</body>
+</html>

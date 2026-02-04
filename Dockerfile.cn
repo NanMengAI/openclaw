@@ -1,0 +1,88 @@
+# OpenClaw 中国版 Dockerfile
+# 针对国内网络环境优化，使用镜像加速
+FROM node:22-bookworm
+
+# 配置国内APT镜像源（阿里云）
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list.d/debian.sources && \
+    sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list.d/debian.sources
+
+# 安装基础依赖
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    && apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# 使用国内Bun镜像源安装Bun
+ENV BUN_INSTALL="/root/.bun"
+ENV PATH="$BUN_INSTALL/bin:${PATH}"
+RUN curl -fsSL https://bun.sh/install | bash
+
+# 配置npm使用淘宝镜像
+RUN npm config set registry https://registry.npmmirror.com && \
+    npm config set disturl https://npmmirror.com/dist && \
+    npm config set electron_mirror https://npmmirror.com/mirrors/electron/ && \
+    npm config set sass_binary_site https://npmmirror.com/mirrors/node-sass/ && \
+    npm config set phantomjs_cdnurl https://npmmirror.com/mirrors/phantomjs/
+
+# 启用pnpm并配置淘宝镜像
+RUN corepack enable && \
+    pnpm config set registry https://registry.npmmirror.com && \
+    pnpm config set store-dir /root/.pnpm-store
+
+WORKDIR /app
+
+# 支持额外的apt包安装
+ARG OPENCLAW_DOCKER_APT_PACKAGES=""
+RUN if [ -n "$OPENCLAW_DOCKER_APT_PACKAGES" ]; then \
+      apt-get update && \
+      DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends $OPENCLAW_DOCKER_APT_PACKAGES && \
+      apt-get clean && \
+      rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*; \
+    fi
+
+# 复制依赖文件
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY ui/package.json ./ui/package.json
+COPY patches ./patches
+COPY scripts ./scripts
+
+# 安装依赖（使用淘宝镜像）
+RUN pnpm install --frozen-lockfile
+
+# 复制源代码并构建
+COPY . .
+RUN OPENCLAW_A2UI_SKIP_MISSING=1 pnpm build
+
+# 使用pnpm构建UI（更稳定）
+ENV OPENCLAW_PREFER_PNPM=1
+RUN pnpm ui:build
+
+# 设置生产环境
+ENV NODE_ENV=production
+
+# 设置中文环境
+ENV OPENCLAW_LANG=zh-CN
+ENV LANG=zh_CN.UTF-8
+ENV LC_ALL=zh_CN.UTF-8
+
+# 允许非root用户写入临时文件
+RUN chown -R node:node /app
+
+# 安全加固：使用非root用户运行
+USER node
+
+# 默认配置文件目录
+ENV OPENCLAW_CONFIG_HOME=/home/node/.openclaw
+RUN mkdir -p /home/node/.openclaw && \
+    chown -R node:node /home/node/.openclaw
+
+# 暴露端口
+EXPOSE 18789 18790
+
+# 启动网关服务
+# 默认绑定到0.0.0.0以支持容器外访问
+# 使用--allow-unconfigured允许首次启动时通过Web UI配置
+CMD ["node", "dist/index.js", "gateway", "--allow-unconfigured", "--bind", "0.0.0.0"]

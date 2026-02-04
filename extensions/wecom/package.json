@@ -1,0 +1,20 @@
+{
+  "name": "@openclaw/extension-wecom",
+  "version": "1.0.0",
+  "description": "WeCom (企业微信) channel extension for OpenClaw",
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "keywords": [
+    "openclaw",
+    "wecom",
+    "wechat",
+    "企业微信"
+  ],
+  "dependencies": {
+    "openclaw": "workspace:*",
+    "zod": "^3.22.4"
+  }
+}
