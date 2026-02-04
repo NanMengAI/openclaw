@@ -39,7 +39,7 @@ function setupEventListeners() {
         
         if (provider === 'nanmengai') {
             customEndpointGroup.style.display = 'none';
-            apiKeyHint.textContent = '访问 https://api.nanmeng.work 获取API密钥';
+            apiKeyHint.textContent = '访问 https://www.nanmengai.cn 获取API密钥';
         } else if (provider === 'openai') {
             customEndpointGroup.style.display = 'none';
             apiKeyHint.textContent = '访问 https://platform.openai.com 获取API密钥';
@@ -253,7 +253,7 @@ function buildConfigData() {
     // AI Provider配置
     let baseURL = '';
     if (config.aiProvider === 'nanmengai') {
-        baseURL = 'https://api.nanmeng.work/v1';
+        baseURL = 'https://api.nanmengai.cn/v1';
     } else if (config.aiProvider === 'openai') {
         baseURL = 'https://api.openai.com/v1';
     } else {

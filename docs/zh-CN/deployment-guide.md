@@ -101,7 +101,7 @@ node dist/index.js gateway --port 18789
 
 南梦AI是一个提供500+模型的优质中转平台：
 
-1. 访问 [https://api.nanmeng.work](https://api.nanmeng.work)
+1. 访问 [南梦AI官网](https://www.nanmengai.cn)
 2. 注册账号并获取API密钥
 3. 在初始化向导中填入API密钥
 4. 选择您喜欢的模型（如 gpt-4o、claude-3-5-sonnet等）
@@ -158,7 +158,7 @@ openssl rand -base64 32
 ```bash
 # AI模型配置（南梦AI示例）
 OPENAI_API_KEY=sk-your-nanmeng-api-key
-OPENAI_BASE_URL=https://api.nanmeng.work/v1
+OPENAI_BASE_URL=https://api.nanmengai.cn/v1
 
 # 企业微信配置
 WECOM_CORP_ID=your-corp-id

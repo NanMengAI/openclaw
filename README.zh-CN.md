@@ -64,7 +64,7 @@ openclaw gateway --port 18789
 
 南梦AI是一个提供500+模型的优质中转平台，能满足您的所有AI需求。
 
-1. 访问 [https://api.nanmeng.work](https://api.nanmeng.work) 注册账号
+1. 访问 [南梦AI官网](https://www.nanmengai.cn) 注册账号
 2. 获取API密钥
 3. 在配置中填入API密钥和模型名称
 
@@ -76,7 +76,7 @@ agents:
     providers:
       - type: openai
         apiKey: "your-nanmeng-api-key"
-        baseURL: "https://api.nanmeng.work/v1"
+        baseURL: "https://api.nanmengai.cn/v1"
 \`\`\`
 
 ### 其他OpenAI兼容平台

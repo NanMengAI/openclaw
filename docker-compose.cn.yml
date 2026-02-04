@@ -20,7 +20,7 @@ services:
       
       # AI模型配置（可选 - 推荐使用南梦AI）
       # OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-      # OPENAI_BASE_URL: https://api.nanmeng.work/v1
+      # OPENAI_BASE_URL: https://api.nanmengai.cn/v1
       
       # 企业微信配置（可选）
       WECOM_CORP_ID: ${WECOM_CORP_ID:-}

@@ -101,7 +101,7 @@ export const zhCN = {
     },
     
     hints: {
-      nanmengai: "访问 https://api.nanmeng.work 获取API密钥",
+      nanmengai: "访问 https://www.nanmengai.cn 获取API密钥",
       customEndpoint: "输入兼容OpenAI格式的API端点",
     },
   },
