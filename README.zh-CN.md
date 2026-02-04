@@ -11,9 +11,9 @@ OpenClaw 是一个功能强大的个人AI助手框架，可以在您自己的设
 当前分支：`v0/hoang46936420ice-7664-8cd5408b`（中国优化版）
 
 克隆此项目：
-\`\`\`bash
+```bash
 git clone -b v0/hoang46936420ice-7664-8cd5408b https://github.com/NanMengAI/openclaw.git
-\`\`\`
+```
 
 ## ✨ 特性
 
@@ -29,7 +29,7 @@ git clone -b v0/hoang46936420ice-7664-8cd5408b https://github.com/NanMengAI/open
 
 使用优化的Docker镜像快速部署：
 
-\`\`\`bash
+```bash
 # 使用部署脚本（推荐）
 curl -fsSL https://openclaw.ai/deploy-cn.sh | bash
 
@@ -39,17 +39,17 @@ docker run -d \\
   -p 18789:18789 \\
   -v ~/openclaw:/root/.openclaw \\
   openclaw/openclaw:latest-cn
-\`\`\`
+```
 
 部署完成后，访问 http://localhost:18789 进行初始化配置。
 
 ### npm安装
 
-\`\`\`bash
+```bash
 npm install -g openclaw@latest
 openclaw onboard-cn  # 中文初始化向导
 openclaw gateway --port 18789
-\`\`\`
+```
 
 ## 📋 支持的渠道
 
@@ -79,7 +79,7 @@ openclaw gateway --port 18789
 2. 获取API密钥
 3. 在配置中填入API密钥和模型名称
 
-\`\`\`yaml
+```yaml
 # config.yaml
 agents:
   defaults:
@@ -88,7 +88,7 @@ agents:
       - type: openai
         apiKey: "your-nanmeng-api-key"
         baseURL: "https://api.nanmengai.cn/v1"
-\`\`\`
+```
 
 ### 其他OpenAI兼容平台
 
@@ -111,14 +111,14 @@ OpenClaw支持所有OpenAI兼容接口的AI平台：
 4. 配置回调URL和可信域名
 5. 在OpenClaw中填入相关信息
 
-\`\`\`yaml
+```yaml
 channels:
   wecom:
     enabled: true
     corpId: "your-corp-id"
     corpSecret: "your-corp-secret"
     agentId: "your-agent-id"
-\`\`\`
+```
 
 ### 钉钉配置
 
@@ -128,13 +128,13 @@ channels:
 4. 配置消息接收地址
 5. 在OpenClaw中填入相关信息
 
-\`\`\`yaml
+```yaml
 channels:
   dingtalk:
     enabled: true
     appKey: "your-app-key"
     appSecret: "your-app-secret"
-\`\`\`
+```
 
 ### 飞书配置
 
@@ -144,14 +144,14 @@ channels:
 4. 启用事件订阅(WebSocket模式)
 5. 在OpenClaw中填入相关信息
 
-\`\`\`yaml
+```yaml
 channels:
   feishu:
     enabled: true
     appId: "cli_xxx"
     appSecret: "your-app-secret"
     domain: "feishu"  # 中国区用 "feishu"，国际版用 "lark"
-\`\`\`
+```
 
 ## 🐳 Docker加速镜像
 
