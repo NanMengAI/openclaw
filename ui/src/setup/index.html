@@ -216,6 +216,52 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .external-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .external-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .external-link.secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .external-link.secondary:hover {
+            background: #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .hint a {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .hint a:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -253,7 +299,12 @@
                 <div class="form-group">
                     <label>API密钥</label>
                     <input type="password" id="apiKey" placeholder="sk-...">
-                    <div class="hint" id="apiKeyHint">访问 https://www.nanmengai.cn 获取API密钥</div>
+                    <div class="hint" id="apiKeyHint">
+                        访问南梦AI官网获取API密钥
+                        <a href="https://www.nanmengai.cn" target="_blank" rel="noopener noreferrer">
+                            前往南梦AI官网 →
+                        </a>
+                    </div>
                 </div>
 
                 <div class="form-group" id="customEndpointGroup" style="display: none;">
@@ -361,7 +412,21 @@
                     <p style="margin: 20px 0; color: #666;">
                         OpenClaw已经配置完成，您现在可以开始使用了。
                     </p>
-                    <button class="btn-primary" onclick="goToDashboard()">进入控制面板</button>
+                    <button class="btn-primary" onclick="goToDashboard()" style="margin-bottom: 20px;">进入控制面板</button>
+                    
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                        <p style="color: #666; margin-bottom: 12px; font-size: 14px;">参考文档和资源：</p>
+                        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                            <a href="https://www.nanmengai.cn" target="_blank" rel="noopener noreferrer" class="external-link">
+                                <span>南梦AI官网</span>
+                                <span>→</span>
+                            </a>
+                            <a href="/docs" target="_blank" class="external-link secondary">
+                                <span>使用文档</span>
+                                <span>→</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
